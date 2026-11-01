@@ -1,0 +1,68 @@
+---
+import { ui, routes } from '../i18n/ui.js';
+interface Props { lang: 'fr' | 'en' }
+const { lang } = Astro.props;
+const t = ui[lang].pathPage;
+---
+
+<main id="top" class="doc">
+  <div class="doc-top">
+    <header class="doc-head">
+      <h1 data-split>{t.h1}</h1>
+      <p class="lead" data-reveal style="--i:2">{t.lead}</p>
+    </header>
+    <article class="glass panel" data-reveal style="--i:3">
+      <h2>{t.experience}</h2>
+      <h3>{t.expTitle}</h3>
+      <p class="date">{t.expDate}</p>
+      <p>{t.expText}</p>
+    </article>
+  </div>
+
+  <section class="doc-sec">
+    <h2 data-reveal>{t.projects}</h2>
+    <ol class="timeline">
+      {t.projectsList.map((it, i) => (
+        <li class="glass panel" data-reveal style={`--i:${Math.min(i, 4)}`}>
+          <p class="date">{it.date}</p>
+          <h3>{it.name}</h3>
+          <p>{it.text}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="doc-sec two">
+    <div>
+      <h2 data-reveal>{t.education}</h2>
+      <article class="glass panel" data-reveal style="--i:1">
+        <p class="big-line">{t.eduLine}</p>
+        <p class="date">{t.eduSub}</p>
+      </article>
+    </div>
+    <div>
+      <h2 data-reveal>{t.certs}</h2>
+      <article class="glass panel" data-reveal style="--i:1">
+        <ul>{t.certsList.map((c) => <li>{c}</li>)}</ul>
+      </article>
+      <h2 class="h2-gap" data-reveal>{t.languages}</h2>
+      <article class="glass panel" data-reveal style="--i:2">
+        <ul class="chips">{t.languagesList.map((l) => <li>{l.name}<span>{l.level}</span></li>)}</ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="doc-sec">
+    <h2 data-reveal>{t.skills}</h2>
+    <div class="skills">
+      {t.skillGroups.map((g, i) => (
+        <article class="glass panel" data-reveal style={`--i:${i + 1}`}>
+          <h3>{g.name}</h3>
+          <ul>{g.items.map((s) => <li>{s}</li>)}</ul>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <p class="doc-cta" data-reveal><a class="btn btn-lg" data-mail href={`${routes.home[lang]}#contact`}>{t.cta}</a></p>
+</main>

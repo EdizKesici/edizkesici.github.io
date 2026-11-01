@@ -1,0 +1,7 @@
+---
+import Base from '../../layouts/Base.astro';
+import Privacy from '../../components/Privacy.astro';
+import { ui } from '../../i18n/ui.js';
+const t = ui.fr.privacyPage;
+---
+<Base lang="fr" page="privacy" title={t.title} description={t.description}><Privacy lang="fr" /></Base>

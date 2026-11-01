@@ -1,0 +1,7 @@
+---
+import Base from '../layouts/Base.astro';
+import Home from '../components/Home.astro';
+import { ui } from '../i18n/ui.js';
+const t = ui.fr;
+---
+<Base lang="fr" page="home" title={t.title} description={t.description}><Home lang="fr" /></Base>

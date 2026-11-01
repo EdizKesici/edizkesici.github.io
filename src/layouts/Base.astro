@@ -1,0 +1,86 @@
+---
+import '@fontsource-variable/bricolage-grotesque';
+import '@fontsource-variable/figtree';
+import '../styles/global.css';
+import bricolageUrl from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wght-normal.woff2?url';
+import figtreeUrl from '@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2?url';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { ui, routes, SITE } from '../i18n/ui.js';
+
+interface Props {
+  lang: 'fr' | 'en';
+  page: 'home' | 'parcours' | 'privacy' | 'notfound';
+  title: string;
+  description: string;
+}
+const { lang, page, title, description } = Astro.props;
+const t = ui[lang];
+const other = lang === 'fr' ? 'en' : 'fr';
+const hasAlt = page !== 'notfound';
+const path = hasAlt ? routes[page][lang] : '/404/';
+const canonical = new URL(path, SITE.url).href;
+const altUrl = hasAlt ? (l: 'fr' | 'en') => new URL(routes[page][l], SITE.url).href : null;
+---
+
+<!doctype html>
+<html lang={t.htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#05131f" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {altUrl && <link rel="alternate" hreflang="fr-BE" href={altUrl('fr')} />}
+    {altUrl && <link rel="alternate" hreflang="en" href={altUrl('en')} />}
+    {altUrl && <link rel="alternate" hreflang="x-default" href={altUrl('fr')} />}
+    <link rel="preload" as="font" type="font/woff2" href={bricolageUrl} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={figtreeUrl} crossorigin />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={t.ogLocale} />
+    <meta property="og:site_name" content="Ediz Kesici" />
+    <meta property="og:image" content={new URL(t.ogImage, SITE.url).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={t.ogAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(t.ogImage, SITE.url).href} />
+    {page === 'notfound' && <meta name="robots" content="noindex" />}
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <a class="skip" href="#top">{t.skip}</a>
+
+    <div class="sky" aria-hidden="true">
+      <i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i>
+      <i class="bubble" data-sheen style="--s:132px;--x:-2%;--y:6%;--d:11s;--p:0.22"></i>
+      <i class="bubble" style="--s:54px;--x:44%;--y:9%;--d:8s;--p:0.5"></i>
+      <i class="bubble" data-sheen style="--s:96px;--x:92%;--y:44%;--d:13s;--p:0.3"></i>
+      <i class="bubble" style="--s:38px;--x:70%;--y:78%;--d:9s;--p:0.6"></i>
+      <i class="bubble x" data-sheen style="--s:170px;--x:-7%;--y:70%;--d:15s;--p:0.18"></i>
+      <i class="bubble x" style="--s:72px;--x:50%;--y:20%;--d:10s;--p:0.38"></i>
+      <i class="bubble x" style="--s:28px;--x:58%;--y:52%;--d:7s;--p:0.7"></i>
+      <i class="bubble x" data-sheen style="--s:110px;--x:80%;--y:12%;--d:14s;--p:0.26"></i>
+      <i class="bubble x" style="--s:46px;--x:34%;--y:86%;--d:9s;--p:0.55"></i>
+      <i class="bubble x" style="--s:64px;--x:96%;--y:86%;--d:12s;--p:0.42"></i>
+      <i class="bubble x" style="--s:22px;--x:2%;--y:44%;--d:6s;--p:0.8"></i>
+    </div>
+
+    <Header lang={lang} page={page} />
+    <slot />
+    <Footer lang={lang} />
+
+    <noscript><p class="ns">{t.contact.noscript} <a href={SITE.linkedin} rel="noopener noreferrer">LinkedIn</a></p></noscript>
+    <script>
+      import '../scripts/app.js';
+    </script>
+  </body>
+</html>

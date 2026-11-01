@@ -1,0 +1,22 @@
+---
+import { ui, routes } from '../i18n/ui.js';
+interface Props { lang: 'fr' | 'en' }
+const { lang } = Astro.props;
+const t = ui[lang].privacyPage;
+---
+
+<main id="top" class="doc narrow">
+  <header class="doc-head">
+    <h1 data-split>{t.h1}</h1>
+    <p class="lead" data-reveal style="--i:2">{t.updated}</p>
+  </header>
+  <div class="prose">
+    {t.blocks.map((b, i) => (
+      <section class="glass panel" data-reveal style={`--i:${Math.min(i, 3)}`}>
+        <h2>{b.h}</h2>
+        {b.p.map((para) => <p>{para}</p>)}
+      </section>
+    ))}
+  </div>
+  <p class="doc-cta" data-reveal><a class="btn btn-ghost" href={routes.home[lang]}>{t.back}</a></p>
+</main>

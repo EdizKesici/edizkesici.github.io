@@ -1,0 +1,18 @@
+---
+import { ui, routes, SITE } from '../i18n/ui.js';
+interface Props { lang: 'fr' | 'en' }
+const { lang } = Astro.props;
+const t = ui[lang];
+---
+
+<footer class="foot">
+  <p class="giant" aria-hidden="true">Ediz Kesici</p>
+  <div class="foot-row">
+    <p>{t.footer.rights}</p>
+    <p class="foot-links">
+      <a href={SITE.github} target="_blank" rel="noopener noreferrer">{t.footer.github}</a>
+      <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer">{t.footer.linkedin}</a>
+      <a href={routes.privacy[lang]}>{t.footer.privacy}</a>
+    </p>
+  </div>
+</footer>

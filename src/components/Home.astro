@@ -1,0 +1,147 @@
+---
+import { ui, routes, PROJECT_URLS, SITE } from '../i18n/ui.js';
+interface Props { lang: 'fr' | 'en' }
+const { lang } = Astro.props;
+const t = ui[lang];
+const p = t.projects.items;
+---
+
+<main id="top">
+  <section class="hero">
+    <div class="hero-text">
+      <h1 data-split>{t.hero.h1}</h1>
+      <p class="lead" data-reveal style="--i:4">{t.hero.lead}</p>
+      <div class="cta-row" data-reveal style="--i:5">
+        <a class="btn" data-mail href="#contact">{t.hero.cta1}</a>
+        <a class="btn btn-ghost" href="#projets">{t.hero.cta2}</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <figure class="frame glass tilt" data-reveal style="--i:3">
+        <p class="frame-url" data-slide-label>tenderia.pages.dev</p>
+        <div class="slides" data-slides>
+          <img class="on" src="/img/tenderia.webp" width="1280" height="800" alt={t.alt.slideTenderia} data-url="tenderia.pages.dev" fetchpriority="high" decoding="async" />
+          <img src="/img/chassis38.webp" width="1280" height="636" alt={t.alt.slideChassis} data-url="chassis38.be" loading="lazy" />
+          <img src="/img/tsl.webp" width="1280" height="800" alt={t.alt.slideTsl} data-url="tslbusinessclub.be" loading="lazy" />
+        </div>
+      </figure>
+      <figure class="phone glass tilt" data-reveal style="--i:6">
+        <div class="pslides" data-pslides>
+          <img class="on" src="/img/tenderia-m.webp" width="390" height="844" alt={t.alt.tenderiaMobile} fetchpriority="high" decoding="async" />
+          <img src="/img/chassis38-m.webp" width="390" height="844" alt={t.alt.phoneChassis} loading="lazy" />
+          <img src="/img/tsl-m.webp" width="390" height="844" alt={t.alt.phoneTsl} loading="lazy" />
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section id="services" class="sec">
+    <h2 data-reveal>{t.services.h2}</h2>
+    <div class="services">
+      <article class="glass panel p-web" data-reveal style="--i:1">
+        <h3>{t.services.web.h3}</h3>
+        <p>{t.services.web.p}</p>
+      </article>
+      <article class="glass panel p-ai" data-reveal style="--i:2">
+        <h3>{t.services.ai.h3}</h3>
+        <p>{t.services.ai.p}</p>
+      </article>
+      <p class="more" data-reveal style="--i:3">{t.services.moreBefore}<a data-mail href="#contact">{t.services.moreLink}</a>{t.services.moreAfter}</p>
+    </div>
+  </section>
+
+  <section id="projets" class="sec">
+    <h2 data-reveal>{t.projects.h2}</h2>
+    <div class="grid">
+      <article class="glass card c-tenderia tilt" data-reveal style="--i:1">
+        <a class="shot" href={PROJECT_URLS.tenderia} target="_blank" rel="noopener noreferrer" aria-label={`Tenderia, ${t.projects.visit}`}>
+          <img loading="lazy" src="/img/tenderia.webp" width="1280" height="800" alt={p.tenderia.alt} />
+        </a>
+        <div class="meta">
+          <h3>Tenderia</h3>
+          <p>{p.tenderia.p}</p>
+          <a class="link" href={PROJECT_URLS.tenderia} target="_blank" rel="noopener noreferrer">{t.projects.visit}</a>
+        </div>
+      </article>
+
+      <article class="glass card c-chassis tilt" data-reveal style="--i:2">
+        <a class="shot" href={PROJECT_URLS.chassis} target="_blank" rel="noopener noreferrer" aria-label={`Chassis38, ${t.projects.visit}`}>
+          <img loading="lazy" src="/img/chassis38.webp" width="1280" height="636" alt={p.chassis.alt} />
+        </a>
+        <div class="meta">
+          <h3>Chassis38</h3>
+          <p>{p.chassis.p}</p>
+          <a class="link" href={PROJECT_URLS.chassis} target="_blank" rel="noopener noreferrer">{t.projects.visit}</a>
+        </div>
+      </article>
+
+      <article class="glass card c-tsl tilt" data-reveal style="--i:3">
+        <a class="shot" href={PROJECT_URLS.tsl} target="_blank" rel="noopener noreferrer" aria-label={`TSL Business Club, ${t.projects.visit}`}>
+          <img loading="lazy" src="/img/tsl.webp" width="1280" height="800" alt={p.tsl.alt} />
+        </a>
+        <div class="meta">
+          <h3>TSL Business Club</h3>
+          <p>{p.tsl.p}</p>
+          <a class="link" href={PROJECT_URLS.tsl} target="_blank" rel="noopener noreferrer">{t.projects.visit}</a>
+        </div>
+      </article>
+
+      <article class="glass card c-cv tilt" data-reveal style="--i:4">
+        <div class="shot">
+          <img loading="lazy" src="/img/cvtalent.webp" width="1280" height="800" alt={p.cvtalent.alt} />
+        </div>
+        <div class="meta">
+          <h3>CVTalent</h3>
+          <p>{p.cvtalent.p}</p>
+        </div>
+      </article>
+
+      <article class="glass card c-rag tilt" data-reveal style="--i:5">
+        <div class="shot">
+          <img loading="lazy" src="/img/rag.webp" width="1280" height="800" alt={p.rag.alt} />
+        </div>
+        <div class="meta">
+          <h3>{p.rag.title}</h3>
+          <p>{p.rag.p}</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="parcours" class="sec">
+    <h2 data-reveal>{t.path.h2}</h2>
+    <div class="path">
+      <article class="glass panel" data-reveal style="--i:1">
+        <h3>{t.path.education}</h3>
+        <p class="big-line">{t.path.educationLine}</p>
+        <p>{t.path.educationSub}</p>
+      </article>
+      <article class="glass panel" data-reveal style="--i:2">
+        <h3>{t.path.certs}</h3>
+        <ul>{t.path.certsList.map((c) => <li>{c}</li>)}</ul>
+      </article>
+      <article class="glass panel" data-reveal style="--i:3">
+        <h3>{t.path.languages}</h3>
+        <ul class="chips">{t.path.languagesList.map((l) => <li>{l}</li>)}</ul>
+      </article>
+    </div>
+    <p class="after" data-reveal><a class="btn btn-ghost" href={routes.parcours[lang]}>{t.path.more}</a></p>
+  </section>
+
+  <section id="contact" class="sec contact">
+    <div class="glass contact-box" data-reveal>
+      <i class="orb o1" aria-hidden="true"></i><i class="orb o2" aria-hidden="true"></i><i class="orb o3" aria-hidden="true"></i>
+      <h2>{t.contact.h2}</h2>
+      <p class="lead">{t.contact.lead}</p>
+      <p><a class="btn btn-lg" data-mail data-mail-main href="#contact"><span>{t.contact.btn}</span></a></p>
+      <div class="contact-links">
+        <button class="btn btn-ghost" type="button" data-copy data-label={t.contact.copy} data-copied={t.contact.copied} data-fail={t.contact.copyFail}><span>{t.contact.copy}</span></button>
+        <a class="btn btn-ghost" href={SITE.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="btn btn-ghost" href={SITE.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <p class="sr-only" role="status" aria-live="polite" data-copy-status></p>
+      <p class="mail-fallback" data-mail-fallback hidden>{t.contact.fallback} <span data-mail-out></span></p>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,11 @@
+---
+import Base from '../layouts/Base.astro';
+import { ui, routes } from '../i18n/ui.js';
+const t = ui.fr.notFound;
+---
+<Base lang="fr" page="notfound" title={t.title} description={t.p}>
+  <main id="top" class="doc narrow">
+    <header class="doc-head"><h1 data-split>{t.h1}</h1><p class="lead" data-reveal style="--i:2">{t.p}</p></header>
+    <p class="doc-cta"><a class="btn btn-ghost" href={routes.home.fr}>{t.back}</a></p>
+  </main>
+</Base>

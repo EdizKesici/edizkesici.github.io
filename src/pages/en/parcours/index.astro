@@ -1,0 +1,7 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Parcours from '../../../components/Parcours.astro';
+import { ui } from '../../../i18n/ui.js';
+const t = ui.en.pathPage;
+---
+<Base lang="en" page="parcours" title={t.title} description={t.description}><Parcours lang="en" /></Base>
