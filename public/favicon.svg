@@ -1,11 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Ediz Kesici">
-  <defs>
-    <radialGradient id="b" cx="50%" cy="50%" r="50%">
-      <stop offset="55%" stop-color="#19b79b" stop-opacity=".35"/>
-      <stop offset="100%" stop-color="#74f5d6" stop-opacity=".95"/>
-    </radialGradient>
-  </defs>
-  <rect width="64" height="64" rx="16" fill="#05131f"/>
-  <circle cx="32" cy="32" r="22" fill="url(#b)"/>
-  <ellipse cx="25" cy="22" rx="7" ry="4.5" fill="#fff" fill-opacity=".85" transform="rotate(-28 25 22)"/>
+  <rect width="64" height="64" rx="14" fill="#05131f"/>
+  <g fill="#74f5d6" transform="translate(5.196 45.412) scale(0.04064 -0.04064)"><path transform="translate(0.0 0)" d="M69 0V660H231V0ZM186 0V130H593V0ZM186 274V391H542V274ZM186 531V660H590V531Z"/><path transform="translate(572.0 0)" d="M69 0V660H230V371Q279 393 321.0 426.0Q363 459 395.5 498.0Q428 537 449.5 578.5Q471 620 481 660H667Q655 614 628.0 566.5Q601 519 563.0 475.5Q525 432 481.5 398.0Q438 364 393 344V329Q439 329 474.5 319.0Q510 309 537.5 288.0Q565 267 585.5 235.5Q606 204 621 160L678 0H495L458 131Q446 175 426.0 200.5Q406 226 373.0 237.5Q340 249 288 249H230V0Z"/></g>
 </svg>
