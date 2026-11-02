@@ -307,7 +307,7 @@ button.btn{font-family:inherit}
 /* ---- light mode for phones and touch screens: the sky holds still, glass blurs less ---- */
 @media (hover:none), (max-width:900px){
   .blob,.bubble,.orb,.bubble::after{animation:none!important}
-  .bubble.x{display:none}
+  .bubble{display:none}
   .glass{-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
   .btn-ghost{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(255,255,255,.14)}
   .js [data-reveal],.js h1[data-split] .w{filter:none}
