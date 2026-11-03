@@ -317,3 +317,44 @@ button.btn{font-family:inherit}
 }
 .mail-fallback{font-size:var(--t-s);color:var(--ink-soft);max-width:none}
 .mail-fallback span{color:var(--ink);font-weight:600;user-select:all}
+
+/* ---- projects: horizontal strip (class html.h-on is set by app.js: desktop, fine pointer, motion allowed, and a browser
+   that supports scroll-driven animations). The section is a tall scroll area; its stage stays pinned while the cards
+   slide sideways. The slide is a CSS scroll-driven animation, so the browser keeps it in sync with the scroll itself
+   (no JavaScript per frame). Without the class the normal vertical grid is used. */
+.hbar{display:none}
+html.h-on #projets{width:auto;max-width:none;margin-inline:0;padding-bottom:0}
+html.h-on #parcours{padding-top:clamp(32px,4vw,64px)}
+html.h-on .hscroll{position:relative;view-timeline:--hs block;view-timeline-inset:0px}
+html.h-on .hpin{
+  --hpad:max(var(--pad),calc((100% - var(--maxw))/2));
+  --hgap:clamp(48px,5vw,80px);
+  position:sticky;top:0;height:100svh;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:center;gap:clamp(24px,4svh,40px);
+  padding:88px 0 64px;
+}
+html.h-on .hpin h2{margin:0 0 0 var(--hpad)}
+html.h-on .grid{
+  display:flex;align-items:stretch;gap:var(--hgap);padding-inline:var(--hpad);
+  animation:hslide linear both;
+}
+html.h-on .card{flex:0 0 clamp(380px,min(34vw,60svh),560px);grid-column:auto}
+html.h-on .c-rag{flex-direction:column;gap:0}
+html.h-on .c-rag .shot{flex:none}
+html.h-on .c-rag .meta{padding:20px 16px 12px}
+html.h-on .c-rag .meta h3{font-size:var(--t-h3);font-weight:700;letter-spacing:-.02em;line-height:1.1}
+html.h-on .c-rag .meta p{font-size:var(--t-b);max-width:none}
+html.h-on .shot img{
+  scale:1.1;transform-origin:50% 0;
+  animation:hpar linear both;
+}
+html.h-on .hbar{display:block;position:absolute;left:var(--hpad);right:var(--hpad);bottom:40px;height:4px;border-radius:999px;background:rgba(255,255,255,.14);overflow:hidden}
+html.h-on .hbar i{display:block;height:100%;border-radius:inherit;background:var(--acc-top);transform-origin:left center;animation:hfill linear both}
+/* The timeline is declared in separate rules on purpose: the CSS minifier would otherwise fold animation-timeline into the
+   `animation` shorthand, a form no browser parses yet, and the whole animation would be dropped. */
+html.h-on .hscroll .grid,html.h-on .hscroll .shot img,html.h-on .hscroll .hbar i{animation-timeline:--hs;animation-range:contain 0% contain 100%}
+/* cards in the moving strip: a lighter blur keeps the slide smooth */
+html.h-on .hpin .glass{-webkit-backdrop-filter:blur(10px) saturate(1.5);backdrop-filter:blur(10px) saturate(1.5)}
+@keyframes hslide{to{transform:translate3d(calc(var(--hdist,0px) * -1),0,0)}}
+@keyframes hpar{from{translate:var(--p0,0px) 0}to{translate:var(--p1,0px) 0}}
+@keyframes hfill{from{transform:scaleX(0)}to{transform:scaleX(1)}}

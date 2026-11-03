@@ -52,8 +52,10 @@ const p = t.projects.items;
   </section>
 
   <section id="projets" class="sec">
+   <div class="hscroll" data-hscroll>
+    <div class="hpin">
     <h2 data-reveal>{t.projects.h2}</h2>
-    <div class="grid">
+    <div class="grid" data-htrack>
       <article class="glass card c-tenderia tilt" data-reveal style="--i:1">
         <a class="shot" href={PROJECT_URLS.tenderia} target="_blank" rel="noopener noreferrer" aria-label={`Tenderia, ${t.projects.visit}`}>
           <img loading="lazy" src="/img/tenderia.webp" width="1280" height="800" alt={p.tenderia.alt} />
@@ -107,6 +109,9 @@ const p = t.projects.items;
         </div>
       </article>
     </div>
+    <div class="hbar" aria-hidden="true"><i></i></div>
+    </div>
+   </div>
   </section>
 
   <section id="parcours" class="sec">
