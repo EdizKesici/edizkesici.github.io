@@ -29,7 +29,7 @@ const altUrl = hasAlt ? (l: 'fr' | 'en') => new URL(routes[page][l], SITE.url).h
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#05131f" />
+    <meta name="theme-color" content="#0b2b34" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -62,20 +62,7 @@ const altUrl = hasAlt ? (l: 'fr' | 'en') => new URL(routes[page][l], SITE.url).h
   <body>
     <a class="skip" href="#top">{t.skip}</a>
 
-    <div class="sky" aria-hidden="true">
-      <i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i>
-      <i class="bubble" data-sheen style="--s:132px;--x:-2%;--y:6%;--d:11s;--p:0.22"></i>
-      <i class="bubble" style="--s:54px;--x:44%;--y:9%;--d:8s;--p:0.5"></i>
-      <i class="bubble" data-sheen style="--s:96px;--x:92%;--y:44%;--d:13s;--p:0.3"></i>
-      <i class="bubble" style="--s:38px;--x:70%;--y:78%;--d:9s;--p:0.6"></i>
-      <i class="bubble x" data-sheen style="--s:170px;--x:-7%;--y:70%;--d:15s;--p:0.18"></i>
-      <i class="bubble x" style="--s:72px;--x:50%;--y:20%;--d:10s;--p:0.38"></i>
-      <i class="bubble x" style="--s:28px;--x:58%;--y:52%;--d:7s;--p:0.7"></i>
-      <i class="bubble x" data-sheen style="--s:110px;--x:80%;--y:12%;--d:14s;--p:0.26"></i>
-      <i class="bubble x" style="--s:46px;--x:34%;--y:86%;--d:9s;--p:0.55"></i>
-      <i class="bubble x" style="--s:64px;--x:96%;--y:86%;--d:12s;--p:0.42"></i>
-      <i class="bubble x" style="--s:22px;--x:2%;--y:44%;--d:6s;--p:0.8"></i>
-    </div>
+    <div class="sky" aria-hidden="true"></div>
 
     <Header lang={lang} page={page} />
     <slot />

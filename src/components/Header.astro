@@ -9,7 +9,7 @@ const hasAlt = page !== 'notfound';
 const switchHref = hasAlt ? routes[page][other] : routes.home[other];
 ---
 
-<header class="bar glass">
+<header class="bar surface">
   <a class="mark" href={home} aria-label={`Ediz Kesici, ${lang === 'fr' ? 'accueil' : 'home'}`}>Ediz Kesici</a>
   <nav aria-label={lang === 'fr' ? 'Navigation principale' : 'Main navigation'}>
     <a href={`${home}#services`}>{t.nav.services}</a>

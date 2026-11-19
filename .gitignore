@@ -5,3 +5,5 @@ dist/
 *.log
 # Design rounds (mockups, screenshots): local only, never published
 _mockups/
+# tasteskill inspection artifacts (screenshots, reports): local only
+.taste-skill/

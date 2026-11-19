@@ -18,7 +18,7 @@ const p = t.projects.items;
     </div>
 
     <div class="hero-visual">
-      <figure class="frame glass tilt" data-reveal style="--i:3">
+      <figure class="frame surface" data-reveal style="--i:3">
         <p class="frame-url" data-slide-label>tenderia.pages.dev</p>
         <div class="slides" data-slides>
           <img class="on" src="/img/tenderia.webp" width="1280" height="800" alt={t.alt.slideTenderia} data-url="tenderia.pages.dev" fetchpriority="high" decoding="async" />
@@ -26,7 +26,7 @@ const p = t.projects.items;
           <img src="/img/tsl.webp" width="1280" height="800" alt={t.alt.slideTsl} data-url="tslbusinessclub.be" loading="lazy" />
         </div>
       </figure>
-      <figure class="phone glass tilt" data-reveal style="--i:6">
+      <figure class="phone surface" data-reveal style="--i:6">
         <div class="pslides" data-pslides>
           <img class="on" src="/img/tenderia-m.webp" width="390" height="844" alt={t.alt.tenderiaMobile} fetchpriority="high" decoding="async" />
           <img src="/img/chassis38-m.webp" width="390" height="844" alt={t.alt.phoneChassis} loading="lazy" />
@@ -39,11 +39,11 @@ const p = t.projects.items;
   <section id="services" class="sec">
     <h2 data-reveal>{t.services.h2}</h2>
     <div class="services">
-      <article class="glass panel p-web" data-reveal style="--i:1">
+      <article class="surface panel p-web" data-reveal style="--i:1">
         <h3>{t.services.web.h3}</h3>
         <p>{t.services.web.p}</p>
       </article>
-      <article class="glass panel p-ai" data-reveal style="--i:2">
+      <article class="surface panel p-ai" data-reveal style="--i:2">
         <h3>{t.services.ai.h3}</h3>
         <p>{t.services.ai.p}</p>
       </article>
@@ -56,7 +56,7 @@ const p = t.projects.items;
     <div class="hpin">
     <h2 data-reveal>{t.projects.h2}</h2>
     <div class="grid" data-htrack>
-      <article class="glass card c-tenderia tilt" data-reveal style="--i:1">
+      <article class="surface card c-tenderia" data-reveal style="--i:1">
         <a class="shot" href={PROJECT_URLS.tenderia} target="_blank" rel="noopener noreferrer" aria-label={`Tenderia, ${t.projects.visit}`}>
           <img loading="lazy" src="/img/tenderia.webp" width="1280" height="800" alt={p.tenderia.alt} />
         </a>
@@ -67,7 +67,7 @@ const p = t.projects.items;
         </div>
       </article>
 
-      <article class="glass card c-chassis tilt" data-reveal style="--i:2">
+      <article class="surface card c-chassis" data-reveal style="--i:2">
         <a class="shot" href={PROJECT_URLS.chassis} target="_blank" rel="noopener noreferrer" aria-label={`Chassis38, ${t.projects.visit}`}>
           <img loading="lazy" src="/img/chassis38.webp" width="1280" height="636" alt={p.chassis.alt} />
         </a>
@@ -78,7 +78,7 @@ const p = t.projects.items;
         </div>
       </article>
 
-      <article class="glass card c-tsl tilt" data-reveal style="--i:3">
+      <article class="surface card c-tsl" data-reveal style="--i:3">
         <a class="shot" href={PROJECT_URLS.tsl} target="_blank" rel="noopener noreferrer" aria-label={`TSL Business Club, ${t.projects.visit}`}>
           <img loading="lazy" src="/img/tsl.webp" width="1280" height="800" alt={p.tsl.alt} />
         </a>
@@ -89,7 +89,7 @@ const p = t.projects.items;
         </div>
       </article>
 
-      <article class="glass card c-cv tilt" data-reveal style="--i:4">
+      <article class="surface card c-cv" data-reveal style="--i:4">
         <div class="shot">
           <img loading="lazy" src="/img/cvtalent.webp" width="1280" height="800" alt={p.cvtalent.alt} />
         </div>
@@ -99,7 +99,7 @@ const p = t.projects.items;
         </div>
       </article>
 
-      <article class="glass card c-rag tilt" data-reveal style="--i:5">
+      <article class="surface card c-rag" data-reveal style="--i:5">
         <div class="shot">
           <img loading="lazy" src="/img/rag.webp" width="1280" height="800" alt={p.rag.alt} />
         </div>
@@ -117,16 +117,16 @@ const p = t.projects.items;
   <section id="parcours" class="sec">
     <h2 data-reveal>{t.path.h2}</h2>
     <div class="path">
-      <article class="glass panel" data-reveal style="--i:1">
+      <article class="surface panel" data-reveal style="--i:1">
         <h3>{t.path.education}</h3>
         <p class="big-line">{t.path.educationLine}</p>
         <p>{t.path.educationSub}</p>
       </article>
-      <article class="glass panel" data-reveal style="--i:2">
+      <article class="surface panel" data-reveal style="--i:2">
         <h3>{t.path.certs}</h3>
         <ul>{t.path.certsList.map((c) => <li>{c}</li>)}</ul>
       </article>
-      <article class="glass panel" data-reveal style="--i:3">
+      <article class="surface panel" data-reveal style="--i:3">
         <h3>{t.path.languages}</h3>
         <ul class="chips">{t.path.languagesList.map((l) => <li>{l}</li>)}</ul>
       </article>
@@ -135,8 +135,7 @@ const p = t.projects.items;
   </section>
 
   <section id="contact" class="sec contact">
-    <div class="glass contact-box" data-reveal>
-      <i class="orb o1" aria-hidden="true"></i><i class="orb o2" aria-hidden="true"></i><i class="orb o3" aria-hidden="true"></i>
+    <div class="surface contact-box" data-reveal>
       <h2>{t.contact.h2}</h2>
       <p class="lead">{t.contact.lead}</p>
       <p><a class="btn btn-lg" data-mail data-mail-main href="#contact"><span>{t.contact.btn}</span></a></p>

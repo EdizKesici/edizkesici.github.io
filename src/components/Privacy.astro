@@ -12,7 +12,7 @@ const t = ui[lang].privacyPage;
   </header>
   <div class="prose">
     {t.blocks.map((b, i) => (
-      <section class="glass panel" data-reveal style={`--i:${Math.min(i, 3)}`}>
+      <section class="surface panel" data-reveal style={`--i:${Math.min(i, 3)}`}>
         <h2>{b.h}</h2>
         {b.p.map((para) => <p>{para}</p>)}
       </section>
