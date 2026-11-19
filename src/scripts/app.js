@@ -1,4 +1,4 @@
-// Behaviour: reveal on scroll, split h1, obfuscated mailto, hero slides, bar auto-hide, horizontal projects strip.
+// Behaviour: reveal on scroll, split h1, obfuscated mailto, hero slides, bar auto-hide, 3D projects flight.
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const lang = document.documentElement.lang.startsWith('fr') ? 'fr' : 'en';
 
@@ -117,59 +117,24 @@ addEventListener(
   { passive: true },
 );
 
-if (!reduce) {
-  // Horizontal projects strip. The slide itself is a CSS scroll-driven animation (see global.css); this code only
-  // measures the layout once per resize and keeps the keyboard working. Nothing runs per scroll frame.
-  const hs = document.querySelector('[data-hscroll]');
-  if (hs) {
-    const SLOW = 2;                                // px of scrolling per px of slide: the strip moves at half the wheel speed
-    const pin = hs.querySelector('.hpin');
-    const track = hs.querySelector('[data-htrack]');
-    const cards = [...track.querySelectorAll('.card')];
-    const mq = matchMedia('(min-width: 901px) and (hover: hover)');
-    const native = CSS.supports('animation-timeline: view()');   // no support: keep the vertical grid, never a jerky fallback
-    let on = false, dist = 0;
-
-    const layout = () => {
-      if (!on) return;
-      const pad = parseFloat(getComputedStyle(track).paddingLeft) || 0;
-      const last = cards[cards.length - 1];
-      // Measured from the cards themselves. Never from the track's max-content width: Firefox adds the unwrapped
-      // text width of every card there, which left a huge empty stretch after the last project.
-      const total = last.offsetLeft + last.offsetWidth + pad;
-      dist = Math.max(0, total - pin.clientWidth);
-      track.style.width = `${total}px`;
-      track.style.setProperty('--hdist', `${dist}px`);
-      hs.style.height = `${dist * SLOW + innerHeight}px`;
-    };
-    const setMode = () => {
-      const next = mq.matches && native;
-      if (next === on) return;
-      on = next;
-      document.documentElement.classList.toggle('h-on', on);
-      if (on) {
-        cards.forEach((c) => { const im = c.querySelector('.shot img'); if (im) im.loading = 'eager'; });   // off-screen cards must be ready
-        layout();
-      } else {
-        hs.style.height = ''; track.style.width = '';
-        track.style.removeProperty('--hdist');
-      }
-    };
-    mq.addEventListener('change', setMode);
-    setMode();
-    addEventListener('resize', layout, { passive: true });
-    addEventListener('load', layout);
-    document.fonts?.ready.then(layout);
-
-    // Keyboard: focusing an off-screen card scrolls the page just enough to slide that card into view.
-    track.addEventListener('focusin', (e) => {
-      if (!on) return;
-      const card = e.target.closest('.card');
-      if (!card) return;
-      pin.scrollLeft = 0;
-      const pad = parseFloat(getComputedStyle(track).paddingLeft) || 0;
-      const want = Math.min(dist, Math.max(0, card.offsetLeft - pad));
-      scrollTo({ top: hs.getBoundingClientRect().top + scrollY + want * SLOW, behavior: 'auto' });
-    });
-  }
+// Projects: 3D flight on desktop (fine pointer, motion allowed, WebGL). Everything else keeps the plain grid.
+// The 3D code is a separate chunk, only fetched when it will actually run.
+const flightRoot = document.querySelector('[data-flight]');
+if (flightRoot && !reduce) {
+  const mq = matchMedia('(min-width: 901px) and (hover: hover)');
+  let flight = null;
+  const sync = async () => {
+    if (mq.matches && !flight) {
+      flight = {};                                              // reserve the slot while the chunk loads
+      try {
+        const { mountFlight } = await import('./flight.js');
+        flight = mq.matches ? mountFlight(flightRoot) : null;
+        if (!mq.matches) flight = null;
+      } catch (e) { console.error(e); flight = null; }
+    } else if (!mq.matches && flight) {
+      flight.destroy?.(); flight = null;
+    }
+  };
+  mq.addEventListener('change', sync);
+  sync();
 }
