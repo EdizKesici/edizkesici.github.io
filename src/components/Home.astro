@@ -120,12 +120,13 @@ const p = t.projects.items;
         <p>{t.path.educationSub}</p>
       </article>
       <article class="surface panel" data-reveal style="--i:2">
-        <h3>{t.path.certs}</h3>
-        <ul>{t.path.certsList.map((c) => <li>{c}</li>)}</ul>
+        <h3>{t.path.experience}</h3>
+        <p class="big-line">{t.path.experienceLine}</p>
+        <p>{t.path.experienceSub}</p>
       </article>
       <article class="surface panel" data-reveal style="--i:3">
-        <h3>{t.path.languages}</h3>
-        <ul class="chips">{t.path.languagesList.map((l) => <li>{l}</li>)}</ul>
+        <h3>{t.path.tech}</h3>
+        <ul class="chips">{t.path.techList.map((l) => <li>{l}</li>)}</ul>
       </article>
     </div>
     <p class="after" data-reveal><a class="btn btn-ghost" href={routes.parcours[lang]}>{t.path.more}</a></p>
