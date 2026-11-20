@@ -8,9 +8,37 @@ import {
 
 const GAP = 12;           // distance between two projects along the flight path
 const SHADOW_ALPHA = 0.55;
+const HOLD = 0.03;        // scroll share kept at each end (first/last project at rest)
+const CREEP = 0.12;       // camera speed near a project, relative to its cruising speed: slow enough to read, never zero,
+                          // so every wheel notch still visibly moves the scene
+const SLOW = 0.35;        // share of each segment (per end) over which the camera eases down to CREEP
+const REST = 0.12;        // |u - project| below this = 'resting on the project' (caption shown)
+const TAU = 0.09;         // seconds: scroll smoothing, frame-rate independent
 
 const smooth = (t) => { t = Math.min(1, Math.max(0, t)); return t * t * (3 - 2 * t); };
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
+
+/** Position along one segment (0 = on project i, 1 = on project i+1) as a function of the segment fraction f.
+ *  The speed profile is CREEP near both projects and 1 in between, integrated once into a lookup table. */
+const PROFILE = (() => {
+  const n = 512, cum = [0];
+  const speed = (f) => CREEP + (1 - CREEP) * smooth(f / SLOW) * smooth((1 - f) / SLOW);
+  for (let k = 1; k <= n; k++) cum.push(cum[k - 1] + (speed(k / n) + speed((k - 1) / n)) / 2);
+  return cum.map((c) => c / cum[n]);
+})();
+const along = (f) => {
+  const x = clamp01(f) * (PROFILE.length - 1), k = Math.min(PROFILE.length - 2, Math.floor(x));
+  return PROFILE[k] + (PROFILE[k + 1] - PROFILE[k]) * (x - k);
+};
+
+/** Scroll progress p in [0,1] -> flight position u in [0, N-1] (u = i means 'resting on project i'). */
+const flightPos = (p, N) => {
+  const q = clamp01((p - HOLD) / (1 - 2 * HOLD)) * (N - 1);
+  const i = Math.min(N - 2, Math.floor(q));
+  return i + along(q - i);
+};
+/** Scroll progress that puts the camera exactly on project i. */
+const progressOf = (i, N) => HOLD + (i / (N - 1)) * (1 - 2 * HOLD);
 
 const loadImg = (src) => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
 
@@ -136,12 +164,13 @@ async function start(root, isDead, undo) {
       // the shadow must sit clearly BEHIND the phone: same depth = z-fighting (flicker)
       const phs = new Mesh(new PlaneGeometry(pW * 2.2, pH * 1.5), new MeshBasicMaterial({ map: shadowTex, transparent: true, opacity: SHADOW_ALPHA, depthWrite: false, toneMapped: false }));
       phs.position.set(ph.position.x + 0.2, ph.position.y - 0.3, 0.55);
+      ph.userData.phone = phs.userData.phone = true;
       g.add(phs, ph);
     }
     scene.add(g);
     g.updateMatrixWorld(true);
     // every mesh fades by ITS OWN depth: the phone sits ~2 units in front of its screen, a per-group fade left it blown up
-    g.traverse((o) => { if (o.isMesh) fades.push({ i, o, m: o.material, base: o.material.opacity, z: o.getWorldPosition(new Vector3()).z }); });
+    g.traverse((o) => { if (o.isMesh) fades.push({ i, phone: !!o.userData.phone, o, m: o.material, base: o.material.opacity, z: o.getWorldPosition(new Vector3()).z }); });
     places.push(g);
     stops.push(new Vector3(-side * 0.7, P.y + 0.2, P.z + 10.4));
     looks.push(new Vector3(P.x, P.y, P.z));
@@ -155,7 +184,7 @@ async function start(root, isDead, undo) {
     b.type = 'button'; b.setAttribute('aria-label', it.name);
     b.append(document.createElement('i'));
     b.addEventListener('click', () => {
-      const top = scrollY + root.getBoundingClientRect().top + ((i + 0.2) / N) * (root.offsetHeight - innerHeight);
+      const top = scrollY + root.getBoundingClientRect().top + progressOf(i, N) * (root.offsetHeight - innerHeight);
       scrollTo({ top, behavior: 'smooth' });
     });
     dotBox.append(b);
@@ -182,10 +211,7 @@ async function start(root, isDead, undo) {
   const pos = new Vector3(), look = new Vector3();
 
   const place = () => {
-    const s = cur * N;
-    const i = Math.min(N - 1, Math.floor(s));
-    const f = s - i;
-    const u = i + (i < N - 1 ? smooth((f - 0.5) / 0.5) : 0);   // dwell on each project, then travel to the next
+    const u = flightPos(cur, N);
     const t = u / (N - 1);
     camCurve.getPoint(t, pos); lookCurve.getPoint(t, look);
     camera.position.set(pos.x + ptr.cx * 0.9, pos.y - ptr.cy * 0.5, pos.z);
@@ -194,15 +220,18 @@ async function start(root, isDead, undo) {
     fades.forEach((f) => {
       // a screen is gone shortly after the camera leaves it (it would otherwise swing across the frame, huge and stretched),
       // and never shown when the camera is about to pass through its depth
-      const left = Math.min(1, Math.max(0, u - f.i));
-      const kLeft = 1 - smooth(left / 0.38);
+      // screens start fading once the camera has left the rest zone; phones sit nearer the camera and turn edge-on
+      // as it moves away, so they go earlier and faster (an edge-on phone reads as a white sliver)
+      const left = u - f.i - (f.phone ? REST - 0.06 : REST - 0.02);
+      const kLeft = 1 - smooth(left / (f.phone ? 0.1 : 0.2));
       const kPass = smooth((camera.position.z - f.z - 1.5) / 6);
       const k = Math.min(kLeft, kPass);
       f.o.visible = k > 0.002;
       f.m.opacity = f.base * k;
     });
-    // the caption is only shown while the camera rests on a project; during the travel it steps aside
-    const idx = Math.abs(u - Math.round(u)) < 0.1 ? Math.round(u) : -1;
+    // the caption shows while the camera is near a project and steps aside mid-travel (no caption over a passing screen,
+    // never a caption that names another project than the one in view)
+    const idx = Math.abs(u - Math.round(u)) < REST ? Math.round(u) : -1;
     if (idx !== lastIdx) {
       lastIdx = idx;
       caps.forEach((c, k) => { c.classList.toggle('on', k === idx); c.setAttribute('aria-hidden', String(k !== idx)); });
@@ -210,12 +239,14 @@ async function start(root, isDead, undo) {
     }
   };
 
-  const tick = () => {
+  let last = 0;
+  const tick = (now = performance.now()) => {
     raf = 0;
     if (!active || isDead()) return;
+    const dt = Math.min(0.1, Math.max(0.001, (now - (last || now - 16)) / 1000)); last = now;
     target = clamp01(-root.getBoundingClientRect().top / len);
     const d = target - cur;
-    if (Math.abs(d) > 1e-5) { cur += d * 0.12; need = true; }
+    if (Math.abs(d) > 1e-5) { cur += d * (1 - Math.exp(-dt / TAU)); need = true; }
     if (Math.abs(ptr.x - ptr.cx) > 1e-3 || Math.abs(ptr.y - ptr.cy) > 1e-3) {
       ptr.cx += (ptr.x - ptr.cx) * 0.06; ptr.cy += (ptr.y - ptr.cy) * 0.06; need = true;
     }
@@ -224,7 +255,7 @@ async function start(root, isDead, undo) {
   };
   const io = new IntersectionObserver(([e]) => {
     active = e.isIntersecting;
-    if (active && !raf) { need = true; raf = requestAnimationFrame(tick); }
+    if (active && !raf) { need = true; last = 0; raf = requestAnimationFrame(tick); }
   }, { rootMargin: '200px 0px' });
   io.observe(root);
   addEventListener('resize', resize);
